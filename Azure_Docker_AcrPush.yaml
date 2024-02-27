@@ -1,1 +1,36 @@
+parameters:
 
+- name: serviceConnection
+  type: string
+
+- name: imageRepository
+  type: string
+  
+- name: tags
+  type: string
+
+- name: dockerPushArgs
+  type: string
+  default: ' '
+
+- name: addPipelineData
+  type: boolean
+  default: true
+
+- name: addBaseImageData
+  type: boolean
+  default: true
+
+steps:
+
+- task: Docker@2
+  inputs:
+    containerRegistry: '${{parameters.serviceConnection}}'
+    repository: '${{parameters.imageRepository}}'
+    command: 'push'          
+    tags: ${{parameters.tags}}
+    arguments: '${{parameters.dockerPushArgs}}'
+    addPipelineData: ${{parameters.addPipelineData}}
+    addBaseImageData: ${{parameters.addBaseImageData}}
+  name: DockerImagePushAcr
+  displayName: "Docker Image Push"
